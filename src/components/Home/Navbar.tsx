@@ -1,0 +1,98 @@
+"use client";
+import Link from "next/link";
+import { BookHeart } from "lucide-react";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "./ui/navigation-menu";
+
+const navigations = [
+  {
+    name: "Home",
+    link: "/",
+    target: "_self",
+  },
+  {
+    name: "Details",
+    link: "/details",
+    target: "_self",
+  },
+  {
+    name: "Github",
+    link: "https://github.com/Young501",
+    target: "_blank",
+  },
+  {
+    name: "Contact Me",
+    link: "/contact",
+    target: "_self",
+  },
+];
+
+const MenuItemLink = (props: {
+  [x: string]: any;
+  href: any;
+  children: any;
+}) => {
+  const { href, children, ...rest } = props;
+  return (
+    <Link
+      href={href}
+      passHref
+      {...rest}
+      className="border-b border-b-dark-200/30 transition-all duration-100 no-underline dark:border-b-light-900/50 hover:border-b-dark-200/60 dark:hover:border-b-light-900/80"
+    >
+      {children}
+    </Link>
+  );
+};
+
+const Navbar = () => {
+  return (
+    <header className="flex p-6 z-10 items-center justify-between primary-text">
+      <Link href="/" passHref className="border-b border-b-white">
+        Young:)
+      </Link>
+      <div className="flex space-x-4 items-center">
+        <nav className="space-x-4 items-center hidden sm:flex">
+          {navigations.map((n, i) => (
+            <MenuItemLink href={n.link} target={n.target} key={i}>
+              {n.name}
+            </MenuItemLink>
+          ))}
+        </nav>
+
+        <div className="block sm:hidden">
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger />
+                <NavigationMenuContent className="flex flex-col">
+                  {navigations.map((n, i) => (
+                    <NavigationMenuLink
+                      key={i}
+                      href={n.link}
+                      className={`hover:font-bold mb-3 px-3 ${
+                        i === 0 ? "mt-3" : ""
+                      }`}
+                    >
+                      {n.name}
+                    </NavigationMenuLink>
+                  ))}
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Navbar;
