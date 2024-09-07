@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Contact() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null); // 初始状态不显示信息框
@@ -140,63 +140,66 @@ export default function Contact() {
         ))}
       </motion.div>
 
-      {/* 只有在 hoveredIcon 不为空时才显示信息框 */}
-      {hoveredIcon && (
-        <motion.div
-          className={`mt-4 p-4 rounded-lg bg-gray-800 bg-opacity-75 text-white shadow-lg h-24 flex items-center transition-all duration-700 ease-in-out transform`}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          onMouseEnter={() => {
-            if (hideTimeout) {
-              clearTimeout(hideTimeout);
-              setHideTimeout(null);
-            }
-          }}
-          onMouseLeave={handleMouseLeave}
-        >
-          {hoveredIcon === 'email' && (
-            <>
-              <strong className="mr-1">Email:</strong> 
-              <a href={`mailto:${contactInfo.email}`} className="text-white-500 hover:underline">
-                {contactInfo.email}
-              </a>
-            </>
-          )}
-          {hoveredIcon === 'phone' && (
-            <>
-              <strong className="mr-1">Phone:</strong> 
-              <a href={`tel:${contactInfo.phone}`} className="text-white-500 hover:underline">
-                {contactInfo.phone}
-              </a>
-            </>
-          )}
-          {hoveredIcon === 'linkedin' && (
-            <>
-              <strong className="mr-1">LinkedIn:</strong> 
-              <a href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer" className="text-white-500 hover:underline">
-                Zechen Yang
-              </a>
-            </>
-          )}
-          {hoveredIcon === 'instagram' && (
-            <>
-              <strong className="mr-1">Instagram:</strong> 
-              <a href={contactInfo.instagram} target="_blank" rel="noopener noreferrer" className="text-white-500 hover:underline">
-                Young
-              </a>
-            </>
-          )}
-          {hoveredIcon === 'wechat' && (
-            <>
-              <strong className="mr-1">WeChat:</strong> 
-              <span className="text-white-500">
-                {contactInfo.wechat}
-              </span>
-            </>
-          )}
-        </motion.div>
-      )}
+      {/* 使用 AnimatePresence 添加退出动画 */}
+      <AnimatePresence>
+        {hoveredIcon && (
+          <motion.div
+            className={`mt-4 p-4 rounded-lg bg-gray-800 bg-opacity-75 text-white shadow-lg h-24 flex items-center`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }} // 退出动画
+            transition={{ duration: 0.5 }}
+            onMouseEnter={() => {
+              if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                setHideTimeout(null);
+              }
+            }}
+            onMouseLeave={handleMouseLeave}
+          >
+            {hoveredIcon === 'email' && (
+              <>
+                <strong className="mr-1">Email:</strong> 
+                <a href={`mailto:${contactInfo.email}`} className="text-white-500 hover:underline">
+                  {contactInfo.email}
+                </a>
+              </>
+            )}
+            {hoveredIcon === 'phone' && (
+              <>
+                <strong className="mr-1">Phone:</strong> 
+                <a href={`tel:${contactInfo.phone}`} className="text-white-500 hover:underline">
+                  {contactInfo.phone}
+                </a>
+              </>
+            )}
+            {hoveredIcon === 'linkedin' && (
+              <>
+                <strong className="mr-1">LinkedIn:</strong> 
+                <a href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer" className="text-white-500 hover:underline">
+                  Zechen Yang
+                </a>
+              </>
+            )}
+            {hoveredIcon === 'instagram' && (
+              <>
+                <strong className="mr-1">Instagram:</strong> 
+                <a href={contactInfo.instagram} target="_blank" rel="noopener noreferrer" className="text-white-500 hover:underline">
+                  Young
+                </a>
+              </>
+            )}
+            {hoveredIcon === 'wechat' && (
+              <>
+                <strong className="mr-1">WeChat:</strong> 
+                <span className="text-white-500">
+                  {contactInfo.wechat}
+                </span>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
