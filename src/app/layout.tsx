@@ -60,7 +60,7 @@ export default function RootLayout({
           </TopologyWrap>
         </ThemeProvider>
         {/* <SpeedInsights /> */}
-        {/* <Analytics /> */}
+        <Analytics />
       </body>
     </html>
   );
