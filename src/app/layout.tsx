@@ -9,7 +9,6 @@ import { Analytics } from "@vercel/analytics/react"
 
 // import { GoogleTagManager } from "@next/third-parties/google";
 // import { SpeedInsights } from "@vercel/speed-insights/next";
-// import { Analytics } from "@vercel/analytics/react";
 
 // import { cn } from "@/lib/utils";
 
@@ -32,6 +31,9 @@ export const metadata: Metadata = {
   description: "Zechen Yang | 杨泽辰",
   keywords:
     "Zechen Yang, 杨泽辰, Young, UNSW",
+  icons: {
+    icon: "/images/icon.png", 
+  },
 };
 
 export default function RootLayout({
