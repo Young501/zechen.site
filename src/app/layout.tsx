@@ -5,6 +5,7 @@ import { ThemeProvider } from "../components/Home/theme-provider";
 import Navbar from "../components/Home/Navbar";
 import Footer from "../components/Home/Footer";
 import TopologyWrap from "../components/Home/TopologyWrap";
+import { Analytics } from "@vercel/analytics/react"
 
 // import { GoogleTagManager } from "@next/third-parties/google";
 // import { SpeedInsights } from "@vercel/speed-insights/next";
