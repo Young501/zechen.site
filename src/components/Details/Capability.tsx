@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const capabilities = {
   "Programming Language": [
-    { name: "C", icon: "/images/c.png" },
+    { name: "C", icon: "/images/C.png" },
     { name: "C++", icon: "/images/cpp.svg" },
     { name: "Python", icon: "/images/python.png" },
     { name: "Java", icon: "/images/java.png" },
