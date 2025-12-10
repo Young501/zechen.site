@@ -13,7 +13,7 @@ export default function RedoAnimText({ delay }: IRedoAnimTextProps) {
     "Employer?",
     "Stranger?",
     "Want to know me quickly?",
-    "Click me and have a interaction with me!",
+    "Click Details and know more about me!",
   ];
 
   const baseText = useTransform(textIndex, (latest) => texts[latest] || "");

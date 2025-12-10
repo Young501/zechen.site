@@ -71,18 +71,18 @@ export default function Contact() {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 120, damping: 16, mass: 0.8 }}
       className="container flex flex-col mx-auto flex-1 max-w-3xl px-6 justify-start"
     >
       <ToastContainer />
 
       <motion.div
         className="mb-2"
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ type: "spring", stiffness: 140, damping: 15 }}
       >
         <Image
           className="rounded-full transition-all duration-100"
@@ -96,9 +96,9 @@ export default function Contact() {
 
       <motion.h1
         className="font-bold mb-8 text-2xl heading-text"
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        transition={{ type: "spring", stiffness: 140, damping: 15, delay: 0.1 }}
       >
         Zechen Yang (Young)
       </motion.h1>
@@ -125,9 +125,11 @@ export default function Contact() {
             onMouseLeave={handleMouseLeave}
             onClick={() => handleIconClick(icon.type)}
             className="cursor-pointer relative"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: "spring", stiffness: 130, damping: 14 }}
+            whileHover={{ scale: 1.1, y: -2 }}
+            whileTap={{ scale: 0.97 }}
           >
             <Image
               src={icon.src}
@@ -144,11 +146,12 @@ export default function Contact() {
       <AnimatePresence>
         {hoveredIcon && (
           <motion.div
-            className={`mt-4 p-4 rounded-lg bg-gray-800 bg-opacity-75 text-white shadow-lg h-24 flex items-center`}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }} // 退出动画
-            transition={{ duration: 0.5 }}
+            layout
+            className="mt-4 p-4 rounded-lg bg-gray-800 bg-opacity-75 text-white shadow-lg h-24 flex items-center"
+            initial={{ opacity: 0, y: 10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }} // 退出动画
+            transition={{ type: "spring", stiffness: 160, damping: 18 }}
             onMouseEnter={() => {
               if (hideTimeout) {
                 clearTimeout(hideTimeout);

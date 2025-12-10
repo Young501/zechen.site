@@ -24,7 +24,19 @@ const Main = () => {
 
       <ul className="list-disc list-inside leading-7">
         <li>
-        Computer Science student at{" "}
+        Master of Information Technology at{" "}
+        <Link
+        href="https://unimelb.edu.au"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="border-b border-b-white"
+        >
+        Unimelb
+        </Link>
+        , specializing in Artificial Intelligence.
+        </li>
+        <li>
+        Bachelor of Computer Science at{" "}
         <Link
         href="https://unsw.edu.au"
         target="_blank"
@@ -49,7 +61,7 @@ const Main = () => {
         </li>
         
         <a
-          href="/ZechenYang Resume.pdf"
+          href="/Zechen Resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="text-white underline hover:text-gray-300"

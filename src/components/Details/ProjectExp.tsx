@@ -9,41 +9,30 @@ export default function ProjectExp() {
 
   const projects = [
     {
-      title: "UNSW Memes",
-      period: "Apr 2023 - Apr 2023",
+      title: "Fanzi Integration Platform – File Processing Module",
+      period: "Nov 2024 - Jun 2025",
       description: [
-        "Build the backend Typescript server for the communication platform UNSW Memes.",
-        "Write registration and login/register functions, communication functions for different channels, user personalization, etc.",
-        "Wrote Typescript test files for the project.",
-        "High-distinction in this group project.",
+        "Contributed to the File Processing branch of the company’s internal automation integration platform, a Python-based desktop application designed to streamline document workflows.",
+        "Participated in frontend, backend, and testing development, focusing on batch processing, Excel data parsing, PDF conversion, and custom printing automation.",
+        "Enhanced system reliability and usability through iterative testing and debugging, improving overall file handling efficiency by over 80%.",
+      ],
+    },
+    {
+      title: "Modern Team Evaluation System for Courses with Group Assessments",
+      period: "Sep 2024 - Nov 2024",
+      description: [
+        "Enhanced navigation bar and intuitive Stage Board design so users can quickly access historical courses and stage data, reducing task completion time by ~40% and improving system usability.",
+        "Implemented data visualization (progress bars, trend charts) and smooth UI transition animations, making the web interface more appealing and increasing user satisfaction with visual design by 90%.",
+        "Utilized React to create a modular design supporting step-by-step form rendering (e.g., expandable/collapsible sections in the tutor feedback page), boosting development efficiency by 50% and ensuring smoother user interactions.",
       ],
     },
     {
       title: "Traffic Sign Recognition Classifier",
-      period: "Jul 2023 - Jul 2023",
-      description: [
-        "The traffic sign classification system is for classifying traffic signs using deep learning techniques with enhanced accuracy and efficiency.",
-        "To achieve this, it uses some popular deep-learning object detection models: LeNet, YOLOv5, and VGG.",
-        "High-distinction (34/35) in this group project.",
-      ],
-    },
-    {
-      title: "Presto",
-      period: "Apr 2024 - Apr 2024",
-      description: [
-        "Designed and developed a single-page application (SPA) using ReactJS to create an alternative to slides.com, including slide creation, editing, and navigation, ensuring a smooth and responsive user interface.",
-        "Integrate with backend RESTful API: Interfaced with a lightweight backend built by team members, utilizing a predefined RESTful API specification to handle data retrieval and submission.",
-        "Developed and tested functionalities for user registration, login, and personalized user experiences.",
-        "Ensure high standards of UI/UX and accessibility: Adhered to modern UI/UX standards, ensuring a high level of accessibility for all users.",
-        "High-distinction in this project.",
-      ],
-    },
-    {
-      title: "Personal Website",
       period: "Jul 2024 - Sep 2024",
       description: [
-        "Developed a personal website using the Next.js framework.",
-        "The website showcases a portfolio, blog, and contact features with a focus on visual design and responsiveness.",
+        "Built a traffic sign classification system using deep learning techniques to improve accuracy and efficiency.",
+        "Applied popular deep-learning object detection models (LeNet, YOLOv5, VGG) to achieve high performance.",
+        "Wrote black-box tests with Jest to validate API endpoints and core functionalities, ensuring reliability and smooth deployment.",
       ],
     },
   ];

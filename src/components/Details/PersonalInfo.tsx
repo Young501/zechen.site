@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 
 export default function PersonalInfo() {
   const info = [
-    { label: "Age", value: "20" },
+    { label: "Age", value: "21" },
     { label: "Gender", value: "Male" },
     { label: "Nationality", value: "Chinese" },
     { label: "Visa Status", value: "Student 500" },
-    { label: "Personality", value: "ENTJ" },
+    { label: "Personality", value: "ESTJ" },
     { label: "Disability", value: "No" },
   ];
 

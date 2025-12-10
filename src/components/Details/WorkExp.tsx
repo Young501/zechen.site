@@ -8,22 +8,21 @@ export default function WorkExp() {
 
   const experiences = [
     {
-      title: "Publicity Assistant",
-      period: "Jun 2021 - Sep 2022",
-      company: "Shanghai Media Interactive Television Co. LTD",
+      title: "Academic Tutor",
+      period: "May 2025 - Present",
+      company: "CPU Education",
       description: [
-        "Video editing: Utilized video editing software to create engaging content, resulting in increased audience engagement.",
-        "Communicating with personnel and checking scripts: Coordinated with team members to ensure accurate and timely script reviews, improving internal communication efficiency and project workflows.",
-        "Activity publicity document writing: Drafting and editing high-quality company event writing, which effectively increased the reading volume of the event by 30%.",
+        "Teach introductory Machine Learning (mathematical foundations and basic models) for university-level students.",
       ],
     },
     {
-      title: "Administrative Assistant",
-      period: "Jun 2020 - Sep 2021",
+      title: "Junior Automation Engineer",
+      period: "Nov 2024 - Jun 2025",
       company: "Shanghai Fanci Enterprise Management Consulting Co. LTD",
       description: [
-        "A simple batch file and folder processing software was customized for the company, which reduced the time consumption of manpower on such repeated work by 80%.",
-        "Handle simple company affairs and administrative tasks: handle administrative tasks in a timely manner, skillfully use various office software, and work 30% more efficiently than ordinary first-year employees.",
+        "Developed Python-based batch folder and file management tools to automate Excel workflows, reducing repetitive handling time by over 80%.",
+        "Built an automated document recognition and processing system using Python (Regex, Pandas) to extract and transform Excel data efficiently.",
+        "Implemented a custom PDF conversion and batch printing solution integrating Python and system APIs, enabling one-click standardized document output.",
       ],
     },
   ];
