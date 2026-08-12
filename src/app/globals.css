@@ -2,14 +2,56 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-html, body {
-height: 100%;
-margin: 0;
-padding: 0;
-overflow-x: hidden; /* 防止水平滚动 */
-}
-      
+html,
 body {
-display: flex;
-flex-direction: column;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+::selection {
+  background: rgba(125, 211, 252, 0.35);
+  color: white;
+}
+
+.primary-text {
+  color: rgb(226 232 240);
+}
+
+.heading-text {
+  color: white;
+  text-shadow: 0 0 28px rgba(125, 211, 252, 0.28);
+}
+
+.glass-panel {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(7, 15, 26, 0.66);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

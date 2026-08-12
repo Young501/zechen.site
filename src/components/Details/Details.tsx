@@ -1,7 +1,17 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Award as AwardIcon,
+  BriefcaseBusiness,
+  FolderKanban,
+  GraduationCap,
+  Sparkles,
+  UserRound,
+  UsersRound,
+  X,
+} from "lucide-react";
 import PersonalInfo from "./PersonalInfo";
 import Education from "./Education";
 import WorkExp from "./WorkExp";
@@ -10,91 +20,141 @@ import Capability from "./Capability";
 import AdditionalExp from "./AdditionalExp";
 import Award from "./Award";
 
+const items = [
+  {
+    type: "personalInfo",
+    label: "Profile",
+    summary: "Contact, location, languages, and current focus",
+    icon: UserRound,
+    component: <PersonalInfo />,
+  },
+  {
+    type: "education",
+    label: "Education",
+    summary: "University of Melbourne and UNSW",
+    icon: GraduationCap,
+    component: <Education />,
+  },
+  {
+    type: "workExperience",
+    label: "Work",
+    summary: "Full-stack, AI, automation, and CRM delivery",
+    icon: BriefcaseBusiness,
+    component: <WorkExp />,
+  },
+  {
+    type: "projectExperience",
+    label: "Projects",
+    summary: "UntappedMe, Fanzi platform, traffic sign recognition",
+    icon: FolderKanban,
+    component: <ProjectExp />,
+  },
+  {
+    type: "capability",
+    label: "Skills",
+    summary: "Languages, frontend, backend, AI, data, cloud",
+    icon: Sparkles,
+    component: <Capability />,
+  },
+  {
+    type: "additionalExperience",
+    label: "Leadership",
+    summary: "Tutoring, academic governance, student representation",
+    icon: UsersRound,
+    component: <AdditionalExp />,
+  },
+  {
+    type: "award",
+    label: "Awards & Certs",
+    summary: "Academic honors and Oracle MySQL credentials",
+    icon: AwardIcon,
+    component: <Award />,
+  },
+];
+
 export default function Details() {
-  const [selectedItem, setSelectedItem] = useState<string | null>(null); // 控制哪个信息框显示
-  const [isHiding, setIsHiding] = useState(false); // 控制内容行是否在隐藏状态
-  const infoBoxRef = useRef<HTMLDivElement>(null); // 引用信息框
-
-  const items = [
-    { type: "personalInfo", label: "Personal Information", component: <PersonalInfo /> },
-    { type: "education", label: "Education", component: <Education /> },
-    { type: "workExperience", label: "Work Experience", component: <WorkExp /> },
-    { type: "projectExperience", label: "Project Experience", component: <ProjectExp /> },
-    { type: "capability", label: "Capability", component: <Capability /> },
-    { type: "additionalExperience", label: "Extracurricular Experience", component: <AdditionalExp /> },
-    { type: "award", label: "Award", component: <Award /> },
-  ];
-
-  const handleSelectItem = (type: string) => {
-    setIsHiding(true); // 开始隐藏内容行
-    setTimeout(() => {
-      setSelectedItem(type); // 延迟后显示信息框
-      setIsHiding(false); // 重置隐藏状态
-    }, 100); // 500ms 延迟，确保内容行完全隐藏后显示信息框
-  };
-
-  const handleCloseInfoBox = () => {
-    setSelectedItem(null); // 关闭信息框并显示所有内容行
-  };
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const selected = items.find((item) => item.type === selectedItem);
 
   return (
-    <div className="container flex flex-col mx-auto max-w-[800px] px-6 justify-start">
-      <AnimatePresence>
-        {/* 如果没有选中项，显示标题和所有内容行 */}
-        {!isHiding && selectedItem === null && (
-          <>
-            <motion.h1
-              className="font-bold mb-4 text-2xl heading-text"
-              initial={{ opacity: 0, y: -20 }} // 初始状态：透明度为0，位置上移
-              animate={{ opacity: 1, y: 0 }} // 显示时：透明度为1，位置复位
-              //exit={{ opacity: 0, y: -20 }} // 隐藏时：透明度为0，位置上移
-              transition={{ duration: 0.3 }}
-            >
+    <div className="container mx-auto flex w-full max-w-[900px] flex-col justify-start px-6 py-8">
+      <AnimatePresence mode="wait">
+        {!selected && (
+          <motion.div
+            key="index"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+          >
+            <h1 className="heading-text mb-3 text-3xl font-bold">
               Hi, I&apos;m Young:)
-            </motion.h1>
+            </h1>
+            <p className="mb-7 max-w-2xl text-sm leading-6 text-slate-300">
+              AI-focused full-stack developer, University of Melbourne MIT
+              student, and tutor working across product features, LLM systems,
+              data pipelines, and workflow automation.
+            </p>
 
-            <div className="flex flex-col space-y-5">
-              {items.map((item, index) => (
-                <motion.div
-                  key={item.type}
-                  className="cursor-pointer relative"
-                  initial={{ opacity: 0, y: 20 }} // 动画初始状态：透明度为0，位置下移
-                  animate={{ opacity: 1, y: 0 }} // 动画结束状态：透明度为1，位置回到原位
-                  //exit={{ opacity: 0 }} // 退出时透明度为0
-                  transition={{ duration: 0.3, delay: index * 0.1 }} // 每个项目延迟出现
-                  onClick={() => handleSelectItem(item.type)} // 点击显示对应项
-                >
-                  <div className="p-4 bg-gray-700 text-white rounded-md hover:bg-gray-600">
-                    {item.label}
-                  </div>
-                </motion.div>
-              ))}
+            <div className="grid gap-3 sm:grid-cols-2">
+              {items.map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <motion.button
+                    type="button"
+                    key={item.type}
+                    className="group rounded-md border border-white/10 bg-slate-950/58 p-4 text-left text-white shadow-xl shadow-black/15 backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-200/50 hover:bg-slate-950/78 focus:outline-none focus:ring-2 focus:ring-cyan-200"
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 170,
+                      damping: 18,
+                      delay: index * 0.045,
+                    }}
+                    onClick={() => setSelectedItem(item.type)}
+                  >
+                    <div className="mb-3 flex items-center justify-between">
+                      <Icon className="size-5 text-cyan-100 transition-transform duration-200 group-hover:-translate-y-0.5" />
+                      <span className="font-mono text-xs text-slate-500">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <div className="text-lg font-semibold">{item.label}</div>
+                    <div className="mt-1 text-sm leading-5 text-slate-400">
+                      {item.summary}
+                    </div>
+                  </motion.button>
+                );
+              })}
             </div>
-          </>
+          </motion.div>
+        )}
+
+        {selected && (
+          <motion.div
+            key={selected.type}
+            className="relative"
+            initial={{ opacity: 0, scale: 0.98, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: -8 }}
+            transition={{ type: "spring", stiffness: 155, damping: 18 }}
+          >
+            <button
+              type="button"
+              className="absolute -top-8 right-2 z-10 inline-flex size-9 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white transition-all duration-200 hover:border-cyan-200/50 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-200 sm:-top-7"
+              onClick={() => setSelectedItem(null)}
+              aria-label="Close section"
+              title="Close"
+            >
+              <X className="size-4" />
+            </button>
+
+            {selected.component}
+          </motion.div>
         )}
       </AnimatePresence>
-
-      {/* 显示选中项的详细信息 */}
-      {selectedItem !== null && (
-        <motion.div
-          ref={infoBoxRef}
-          className="p-4 rounded-lg bg-gray-800 bg-opacity-75 text-white shadow-lg relative"
-          initial={{ opacity: 0, scale: 0.95 }} // 初始状态：透明度为0，略小
-          animate={{ opacity: 1, scale: 1 }} // 显示时：透明度为1，大小恢复
-          transition={{ duration: 0.4, ease: "easeInOut" }} // 控制动画速度
-        >
-          {/* 关闭按钮 */}
-          <button
-            className="absolute top-2 right-2 text-white text-lg"
-            onClick={handleCloseInfoBox}
-          >
-            ×
-          </button>
-
-          {/* 显示内容 */}
-          {items.find((item) => item.type === selectedItem)?.component}
-        </motion.div>
-      )}
     </div>
   );
 }

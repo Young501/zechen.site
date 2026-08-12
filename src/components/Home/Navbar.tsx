@@ -1,15 +1,15 @@
 "use client";
+
 import Link from "next/link";
-import { BookHeart } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { FileDown } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "./ui/navigation-menu";
 
 const navigations = [
@@ -29,24 +29,33 @@ const navigations = [
     target: "_blank",
   },
   {
-    name: "Contact Me",
+    name: "Contact",
     link: "/contact",
     target: "_self",
   },
 ];
 
-const MenuItemLink = (props: {
-  [x: string]: any;
-  href: any;
-  children: any;
+const MenuItemLink = ({
+  href,
+  target,
+  children,
+  active,
+}: {
+  href: string;
+  target: string;
+  children: React.ReactNode;
+  active: boolean;
 }) => {
-  const { href, children, ...rest } = props;
   return (
     <Link
       href={href}
-      passHref
-      {...rest}
-      className="border-b border-b-dark-200/30 transition-all duration-100 no-underline dark:border-b-light-900/50 hover:border-b-dark-200/60 dark:hover:border-b-light-900/80"
+      target={target}
+      rel={target === "_blank" ? "noopener noreferrer" : undefined}
+      className={`border-b text-sm no-underline transition-all duration-200 ${
+        active
+          ? "border-b-cyan-200 text-white"
+          : "border-b-white/20 text-slate-300 hover:border-b-white/70 hover:text-white"
+      }`}
     >
       {children}
     </Link>
@@ -54,37 +63,64 @@ const MenuItemLink = (props: {
 };
 
 const Navbar = () => {
+  const pathname = usePathname();
+
   return (
-    <header className="flex p-6 z-10 items-center justify-between primary-text">
-      <Link href="/" passHref className="border-b border-b-white">
+    <header className="relative z-20 flex items-center justify-between px-6 py-5 primary-text">
+      <Link
+        href="/"
+        className="border-b border-b-cyan-200/60 font-mono text-sm tracking-wide text-white transition-colors hover:border-b-white"
+      >
         Young:)
       </Link>
-      <div className="flex space-x-4 items-center">
-        <nav className="space-x-4 items-center hidden sm:flex">
-          {navigations.map((n, i) => (
-            <MenuItemLink href={n.link} target={n.target} key={i}>
-              {n.name}
+
+      <div className="flex items-center gap-4">
+        <nav className="hidden items-center gap-4 sm:flex">
+          {navigations.map((navigation) => (
+            <MenuItemLink
+              href={navigation.link}
+              target={navigation.target}
+              key={navigation.name}
+              active={pathname === navigation.link}
+            >
+              {navigation.name}
             </MenuItemLink>
           ))}
+          <a
+            href="/Zechen Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex size-9 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-200/50 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-200"
+            aria-label="Open resume PDF"
+            title="Open resume PDF"
+          >
+            <FileDown className="size-4" />
+          </a>
         </nav>
 
         <div className="block sm:hidden">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger />
-                <NavigationMenuContent className="flex flex-col">
-                  {navigations.map((n, i) => (
+                <NavigationMenuTrigger aria-label="Open navigation menu" />
+                <NavigationMenuContent className="flex min-w-36 flex-col p-3">
+                  {navigations.map((navigation) => (
                     <NavigationMenuLink
-                      key={i}
-                      href={n.link}
-                      className={`hover:font-bold mb-3 px-3 ${
-                        i === 0 ? "mt-3" : ""
-                      }`}
+                      key={navigation.name}
+                      href={navigation.link}
+                      target={navigation.target}
+                      className="rounded-md px-3 py-2 text-sm text-white transition-colors hover:bg-white/10"
                     >
-                      {n.name}
+                      {navigation.name}
                     </NavigationMenuLink>
                   ))}
+                  <NavigationMenuLink
+                    href="/Zechen Resume.pdf"
+                    target="_blank"
+                    className="rounded-md px-3 py-2 text-sm text-cyan-100 transition-colors hover:bg-white/10"
+                  >
+                    Resume PDF
+                  </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>

@@ -1,110 +1,190 @@
 "use client";
 
-import Image from 'next/image';
-import { useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { motion, AnimatePresence } from 'framer-motion';
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AnimatePresence, motion } from "framer-motion";
+
+type ContactType = "email" | "phone" | "linkedin" | "instagram" | "wechat";
+
+const contactInfo = {
+  email: "yangzechenau@gmail.com",
+  phone: "+61 493 495 813",
+  phoneHref: "tel:+61493495813",
+  linkedin: "https://www.linkedin.com/in/zechen-yang-111236259/",
+  instagram: "https://www.instagram.com/young501501/",
+  wechat: "Young501501",
+};
+
+const icons: Array<{
+  type: ContactType;
+  src: string;
+  alt: string;
+  label: string;
+}> = [
+  { type: "email", src: "/images/email.png", alt: "Email", label: "Email" },
+  { type: "phone", src: "/images/phone-flip.png", alt: "Phone", label: "Phone" },
+  {
+    type: "linkedin",
+    src: "/images/linkedin.png",
+    alt: "LinkedIn",
+    label: "LinkedIn",
+  },
+  {
+    type: "instagram",
+    src: "/images/instagram.png",
+    alt: "Instagram",
+    label: "Instagram",
+  },
+  { type: "wechat", src: "/images/comments.png", alt: "WeChat", label: "WeChat" },
+];
+
+const getDetail = (type: ContactType) => {
+  switch (type) {
+    case "email":
+      return {
+        label: "Email",
+        value: contactInfo.email,
+        href: `mailto:${contactInfo.email}`,
+      };
+    case "phone":
+      return {
+        label: "Phone",
+        value: contactInfo.phone,
+        href: contactInfo.phoneHref,
+      };
+    case "linkedin":
+      return {
+        label: "LinkedIn",
+        value: "Zechen Yang",
+        href: contactInfo.linkedin,
+      };
+    case "instagram":
+      return {
+        label: "Instagram",
+        value: "Young",
+        href: contactInfo.instagram,
+      };
+    case "wechat":
+      return {
+        label: "WeChat",
+        value: contactInfo.wechat,
+      };
+  }
+};
 
 export default function Contact() {
-  const [hoveredIcon, setHoveredIcon] = useState<string | null>(null); // 初始状态不显示信息框
-  const [hideTimeout, setHideTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [hoveredIcon, setHoveredIcon] = useState<ContactType | null>(null);
+  const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const contactInfo = {
-    email: "yangzechenau@gmail.com",
-    phone: "+61 49 349 5813 (Australia)",
-    linkedin: "https://www.linkedin.com/in/zechen-yang-111236259/",
-    instagram: "https://www.instagram.com/young501501/",
-    wechat: "Young501501"
+  useEffect(() => {
+    return () => {
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const clearHideTimeout = () => {
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+      hideTimeoutRef.current = null;
+    }
   };
 
-  const icons = [
-    { type: 'email', src: '/images/email.png', alt: 'Email Icon' },
-    { type: 'phone', src: '/images/phone-flip.png', alt: 'Phone Icon' },
-    { type: 'linkedin', src: '/images/linkedin.png', alt: 'LinkedIn Icon' },
-    { type: 'instagram', src: '/images/instagram.png', alt: 'Instagram Icon' },
-    { type: 'wechat', src: '/images/comments.png', alt: 'WeChat Icon' },
-  ];
-
-  const handleMouseEnter = (type: string) => {
-    if (hideTimeout) {
-      clearTimeout(hideTimeout);
-      setHideTimeout(null);
-    }
+  const handleMouseEnter = (type: ContactType) => {
+    clearHideTimeout();
     setHoveredIcon(type);
   };
 
   const handleMouseLeave = () => {
-    const timeout = setTimeout(() => {
-      setHoveredIcon(null); // 鼠标离开后5秒隐藏
-    }, 5000); // 5秒延迟隐藏信息框
-    setHideTimeout(timeout);
+    clearHideTimeout();
+    hideTimeoutRef.current = setTimeout(() => {
+      setHoveredIcon(null);
+    }, 2400);
   };
 
-  const handleIconClick = (type: string) => {
-    if (type === 'wechat') {
-      navigator.clipboard.writeText(contactInfo.wechat);
-      toast.success("You have added WeChat info into your clipboard", {
+  const copyToClipboard = async (value: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      toast.success(`${label} copied to clipboard`, {
         position: "top-right",
-        autoClose: 3000,
-        style: {
-          marginTop: '60px', // 根据导航栏高度调整
-        },
+        autoClose: 2200,
+        theme: "dark",
+        style: { marginTop: "60px" },
       });
-    } else if (type === 'email') {
-      navigator.clipboard.writeText(contactInfo.email);
-      toast.success("You have added E-mail info into your clipboard", {
+    } catch {
+      toast.error(`Could not copy ${label}`, {
         position: "top-right",
-        autoClose: 3000,
-        style: {
-          marginTop: '60px', // 根据导航栏高度调整
-        },
+        autoClose: 2600,
+        theme: "dark",
+        style: { marginTop: "60px" },
       });
-    } else if (type === 'phone') {
-      window.location.href = `tel:${contactInfo.phone}`;
-    } else if (type === 'linkedin') {
-      window.open(contactInfo.linkedin, '_blank');
-    } else if (type === 'instagram') {
-      window.open(contactInfo.instagram, '_blank');
     }
   };
 
+  const handleIconClick = (type: ContactType) => {
+    if (type === "wechat") {
+      void copyToClipboard(contactInfo.wechat, "WeChat");
+    } else if (type === "email") {
+      void copyToClipboard(contactInfo.email, "Email");
+    } else if (type === "phone") {
+      window.location.href = contactInfo.phoneHref;
+    } else if (type === "linkedin") {
+      window.open(contactInfo.linkedin, "_blank", "noopener,noreferrer");
+    } else if (type === "instagram") {
+      window.open(contactInfo.instagram, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const detail = hoveredIcon ? getDetail(hoveredIcon) : null;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 120, damping: 16, mass: 0.8 }}
-      className="container flex flex-col mx-auto flex-1 max-w-3xl px-6 justify-start"
+      transition={{ type: "spring", stiffness: 125, damping: 18 }}
+      className="container mx-auto flex max-w-3xl flex-1 flex-col justify-center px-6 py-10"
     >
       <ToastContainer />
 
       <motion.div
-        className="mb-2"
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 140, damping: 15 }}
+        className="mb-4"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: "spring", stiffness: 130, damping: 16, delay: 0.06 }}
       >
         <Image
-          className="rounded-full transition-all duration-100"
+          className="rounded-full border border-white/15 shadow-[0_0_40px_rgba(125,211,252,0.18)]"
           src="/images/icon.jpg"
-          alt="my favourite photo"
-          width={130}
-          height={130}
+          alt="Zechen Yang"
+          width={132}
+          height={132}
           priority
         />
       </motion.div>
 
       <motion.h1
-        className="font-bold mb-8 text-2xl heading-text"
-        initial={{ opacity: 0, y: -12 }}
+        className="heading-text mb-3 text-3xl font-bold sm:text-4xl"
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 140, damping: 15, delay: 0.1 }}
+        transition={{ duration: 0.32, delay: 0.1 }}
       >
         Zechen Yang (Young)
       </motion.h1>
+      <motion.p
+        className="mb-8 max-w-xl text-sm leading-6 text-slate-300"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.32, delay: 0.16 }}
+      >
+        Melbourne CBD - available through email, phone, LinkedIn, Instagram, or
+        WeChat.
+      </motion.p>
 
       <motion.div
-        className="flex space-x-6 mb-4"
+        className="mb-4 flex flex-wrap gap-4"
         initial="hidden"
         animate="visible"
         variants={{
@@ -112,97 +192,83 @@ export default function Contact() {
           visible: {
             opacity: 1,
             transition: {
-              delayChildren: 0.4,
-              staggerChildren: 0.2,
+              delayChildren: 0.24,
+              staggerChildren: 0.07,
             },
           },
         }}
       >
         {icons.map((icon) => (
-          <motion.div
+          <motion.button
+            type="button"
             key={icon.type}
             onMouseEnter={() => handleMouseEnter(icon.type)}
+            onFocus={() => handleMouseEnter(icon.type)}
             onMouseLeave={handleMouseLeave}
+            onBlur={handleMouseLeave}
             onClick={() => handleIconClick(icon.type)}
-            className="cursor-pointer relative"
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ type: "spring", stiffness: 130, damping: 14 }}
-            whileHover={{ scale: 1.1, y: -2 }}
+            className="relative inline-flex size-14 cursor-pointer items-center justify-center rounded-md border border-white/10 bg-white/5 transition-all duration-200 hover:border-cyan-200/50 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-200"
+            aria-label={icon.label}
+            title={icon.label}
+            variants={{
+              hidden: { opacity: 0, y: 10, scale: 0.96 },
+              visible: { opacity: 1, y: 0, scale: 1 },
+            }}
+            transition={{ type: "spring", stiffness: 150, damping: 15 }}
+            whileHover={{ scale: 1.06, y: -2 }}
             whileTap={{ scale: 0.97 }}
           >
             <Image
               src={icon.src}
               alt={icon.alt}
-              width={50}
-              height={50}
-              className="transition-all duration-300 hover:scale-110 filter invert"
+              width={34}
+              height={34}
+              className="size-8 object-contain invert"
             />
-          </motion.div>
+          </motion.button>
         ))}
       </motion.div>
 
-      {/* 使用 AnimatePresence 添加退出动画 */}
-      <AnimatePresence>
-        {hoveredIcon && (
-          <motion.div
-            layout
-            className="mt-4 p-4 rounded-lg bg-gray-800 bg-opacity-75 text-white shadow-lg h-24 flex items-center"
-            initial={{ opacity: 0, y: 10, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.98 }} // 退出动画
-            transition={{ type: "spring", stiffness: 160, damping: 18 }}
-            onMouseEnter={() => {
-              if (hideTimeout) {
-                clearTimeout(hideTimeout);
-                setHideTimeout(null);
-              }
-            }}
-            onMouseLeave={handleMouseLeave}
-          >
-            {hoveredIcon === 'email' && (
-              <>
-                <strong className="mr-1">Email:</strong> 
-                <a href={`mailto:${contactInfo.email}`} className="text-white-500 hover:underline">
-                  {contactInfo.email}
-                </a>
-              </>
-            )}
-            {hoveredIcon === 'phone' && (
-              <>
-                <strong className="mr-1">Phone:</strong> 
-                <a href={`tel:${contactInfo.phone}`} className="text-white-500 hover:underline">
-                  {contactInfo.phone}
-                </a>
-              </>
-            )}
-            {hoveredIcon === 'linkedin' && (
-              <>
-                <strong className="mr-1">LinkedIn:</strong> 
-                <a href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer" className="text-white-500 hover:underline">
-                  Zechen Yang
-                </a>
-              </>
-            )}
-            {hoveredIcon === 'instagram' && (
-              <>
-                <strong className="mr-1">Instagram:</strong> 
-                <a href={contactInfo.instagram} target="_blank" rel="noopener noreferrer" className="text-white-500 hover:underline">
-                  Young
-                </a>
-              </>
-            )}
-            {hoveredIcon === 'wechat' && (
-              <>
-                <strong className="mr-1">WeChat:</strong> 
-                <span className="text-white-500">
-                  {contactInfo.wechat}
-                </span>
-              </>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="min-h-[92px]">
+        <AnimatePresence mode="wait">
+          {detail && (
+            <motion.div
+              key={detail.label}
+              className="glass-panel mt-4 flex min-h-[84px] items-center rounded-md p-4 text-white"
+              initial={{ opacity: 0, y: 10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 170, damping: 18 }}
+              onMouseEnter={clearHideTimeout}
+              onMouseLeave={handleMouseLeave}
+            >
+              <div>
+                <div className="mb-1 font-mono text-xs uppercase tracking-[0.18em] text-slate-400">
+                  {detail.label}
+                </div>
+                {detail.href ? (
+                  <a
+                    href={detail.href}
+                    target={detail.href.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      detail.href.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    className="break-all text-sm font-semibold text-cyan-100 hover:underline sm:text-base"
+                  >
+                    {detail.value}
+                  </a>
+                ) : (
+                  <span className="text-sm font-semibold text-cyan-100 sm:text-base">
+                    {detail.value}
+                  </span>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 }

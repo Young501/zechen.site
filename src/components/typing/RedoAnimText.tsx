@@ -1,4 +1,5 @@
 "use client";
+
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect } from "react";
 
@@ -6,48 +7,47 @@ export interface IRedoAnimTextProps {
   delay: number;
 }
 
+const texts = [
+  "Building AI learning tools",
+  "Shipping full-stack features",
+  "Automating document workflows",
+  "Oracle-certified in MySQL",
+  "Teaching ML and data structures",
+  "Open Details for the full resume",
+];
+
 export default function RedoAnimText({ delay }: IRedoAnimTextProps) {
   const textIndex = useMotionValue(0);
-  const texts = [
-    "Function in developing",
-    "Employer?",
-    "Stranger?",
-    "Want to know me quickly?",
-    "Click Details and know more about me!",
-  ];
-
-  const baseText = useTransform(textIndex, (latest) => texts[latest] || "");
   const count = useMotionValue(0);
+  const maxLength = Math.max(...texts.map((text) => text.length));
   const rounded = useTransform(count, (latest) => Math.round(latest));
+  const baseText = useTransform(textIndex, (latest) => texts[latest] || "");
   const displayText = useTransform(rounded, (latest) =>
     baseText.get().slice(0, latest),
   );
   const updatedThisRound = useMotionValue(true);
 
   useEffect(() => {
-    animate(count, 60, {
+    const controls = animate(count, maxLength, {
       type: "tween",
-      delay: delay,
-      duration: 1,
-      ease: "easeIn",
+      delay,
+      duration: 1.4,
+      ease: "easeInOut",
       repeat: Infinity,
       repeatType: "reverse",
-      repeatDelay: 0.5,
+      repeatDelay: 0.7,
       onUpdate(latest) {
-        if (updatedThisRound.get() === true && latest > 0) {
+        if (updatedThisRound.get() && latest > 0) {
           updatedThisRound.set(false);
-        } else if (updatedThisRound.get() === false && latest === 0) {
-          if (textIndex.get() === texts.length - 1) {
-            textIndex.set(0);
-          } else {
-            textIndex.set(textIndex.get() + 1);
-          }
+        } else if (!updatedThisRound.get() && latest === 0) {
+          textIndex.set((textIndex.get() + 1) % texts.length);
           updatedThisRound.set(true);
         }
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    return controls.stop;
+  }, [count, delay, maxLength, textIndex, updatedThisRound]);
 
   return <motion.span className="inline">{displayText}</motion.span>;
 }

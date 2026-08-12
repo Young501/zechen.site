@@ -1,12 +1,8 @@
-interface FooterProp {
-  path?: string;
-}
-
-const Footer = async (prop: FooterProp) => {
+const Footer = async () => {
   return (
-    <footer className="relative text-xs text-center px-6 py-2 primary-text">
-      <div>
-       - version 1.0.0 (PC only) - Built by Zechen Yang ©️ 2024 - {new Date().getFullYear()}
+    <footer className="relative px-6 py-3 text-center text-xs primary-text">
+      <div className="tracking-wide text-slate-400">
+        version 1.1.0 - Built by Zechen Yang (c) 2024 - {new Date().getFullYear()}
       </div>
     </footer>
   );
